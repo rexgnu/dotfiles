@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+#
+# Bootstrap dotfiles onto a new machine.
+#
+# Usage:
+#   curl -fsSL https://raw.githubusercontent.com/rexgnu/dotfiles/main/.local/bin/dotfiles-bootstrap | bash
+#
+# Or clone manually and run:
+#   bash ~/.local/bin/dotfiles-bootstrap
+#
+set -euo pipefail
+
+DOTFILES_REPO="https://github.com/rexgnu/dotfiles.git"
+DOTFILES_DIR="$HOME/.dotfiles"
+
+if [ -d "$DOTFILES_DIR" ]; then
+    echo "~/.dotfiles already exists — aborting."
+    echo "Remove it first if you want a fresh clone."
+    exit 1
+fi
+
+echo "Cloning dotfiles..."
+git clone --bare "$DOTFILES_REPO" "$DOTFILES_DIR"
+
+dotfiles() {
+    git --git-dir="$DOTFILES_DIR" --work-tree="$HOME" "$@"
+}
+
+dotfiles config core.excludesFile "$HOME/.gitignore-dotfiles"
+dotfiles config status.showUntrackedFiles no
+
+echo "Checking out dotfiles..."
+if ! dotfiles checkout 2>/dev/null; then
+    echo ""
+    echo "Backing up pre-existing files that would be overwritten..."
+    mkdir -p "$HOME/.dotfiles-backup"
+    dotfiles checkout 2>&1 \
+        | grep -E "^\s+" \
+        | awk '{print $1}' \
+        | while read -r file; do
+            mkdir -p "$HOME/.dotfiles-backup/$(dirname "$file")"
+            mv "$HOME/$file" "$HOME/.dotfiles-backup/$file"
+            echo "  backed up: $file"
+        done
+    dotfiles checkout
+fi
+
+if [ ! -f "$HOME/.secrets" ]; then
+    echo "Creating empty ~/.secrets file..."
+    cat > "$HOME/.secrets" << 'SECRETS'
+# ~/.secrets — machine-local secrets, NEVER committed to dotfiles.
+#
+# Put API keys, tokens, etc. here.
+# This file is sourced by .zshrc automatically.
+SECRETS
+    chmod 600 "$HOME/.secrets"
+fi
+
+echo ""
+echo "Done! Restart your shell or run: source ~/.zshrc"
+echo "Use 'dotfiles' instead of 'git' to manage your dotfiles."
+echo ""
+echo "Quick reference:"
+echo "  dotfiles status         — see what changed"
+echo "  dotfiles add ~/.vimrc   — track a new file"
+echo "  dotfiles commit -m '…'  — commit changes"

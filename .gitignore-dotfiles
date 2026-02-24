@@ -1,0 +1,21 @@
+# Ignore everything by default — only explicitly allowed files get tracked.
+# This is the single most important line for keeping secrets out of a public repo.
+*
+
+# ---  Allowed files (use ! to un-ignore) ---
+!README.md
+!LICENSE
+!.gitignore-dotfiles
+!.zshrc
+!.zprofile
+!.config/
+!.config/git/
+!.config/git/config
+!.config/git/ignore
+!.local/
+!.local/bin/
+!.local/bin/dotfiles-bootstrap
+
+# Allow future additions by un-ignoring here.
+# Pattern: !.some-dotfile
+# For directories: !.config/foo/ then !.config/foo/** to allow contents.
