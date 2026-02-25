@@ -54,5 +54,6 @@ compdef dotfiles=git
 # ---------- Prompt ----------
 eval "$(starship init zsh)"
 
-# ---------- Path ----------
-. "$HOME/.local/bin/env"
+# ---------- Machine-local interactive config ----------
+# Machine-specific aliases, completions, plugins go in ~/.zshrc.local
+[ -f "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"

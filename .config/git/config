@@ -1,0 +1,26 @@
+[init]
+	defaultBranch = main
+[user]
+	name = Gabriel Ledung
+	email = rexgnu@gmail.com
+	signingkey = 7AB94B52DF8B6575
+[pull]
+	rebase = true
+[alias]
+	st = status -sb
+	ll = log --oneline
+	last = log -1 HEAD --stat
+	cm = commit -m
+	rv = remote -v
+	d = diff
+	gl = config --global -l
+	se = !git rev-list --all | xargs git grep -F
+	co = checkout
+[help]
+	autocorrect = 20
+[commit]
+	gpgsign = true
+[tag]
+	gpgSign = true
+[gpg]
+	program = gpg
