@@ -51,6 +51,15 @@ zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 compdef dotfiles=git
 
+# ---------- Plugins ----------
+# zsh-autosuggestions: shadow completion from history, accept with right arrow
+# Install: brew install zsh-autosuggestions (macOS) / apt install zsh-autosuggestions (Debian/Ubuntu)
+if [ -f /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
+  source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+elif [ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
+  source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+fi
+
 # ---------- Prompt ----------
 eval "$(starship init zsh)"
 
