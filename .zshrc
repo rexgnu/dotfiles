@@ -51,8 +51,8 @@ zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 compdef dotfiles=git
 
-# ---------- Shell ----------
-source "/opt/homebrew/opt/spaceship/spaceship.zsh"
+# ---------- Prompt ----------
+eval "$(starship init zsh)"
 
 # ---------- Path ----------
 . "$HOME/.local/bin/env"
