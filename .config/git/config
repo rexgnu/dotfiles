@@ -3,7 +3,7 @@
 [user]
 	name = Gabriel Ledung
 	email = rexgnu@gmail.com
-	signingkey = 7AB94B52DF8B6575
+	signingkey = 5A708E6AE02943B8
 [pull]
 	rebase = true
 [alias]
