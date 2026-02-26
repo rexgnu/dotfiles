@@ -34,14 +34,13 @@ if ! dotfiles checkout 2>/dev/null; then
     echo ""
     echo "Backing up pre-existing files that would be overwritten..."
     mkdir -p "$HOME/.dotfiles-backup"
-    dotfiles checkout 2>&1 \
-        | grep -E "^\s+" \
-        | awk '{print $1}' \
-        | while read -r file; do
-            mkdir -p "$HOME/.dotfiles-backup/$(dirname "$file")"
-            mv "$HOME/$file" "$HOME/.dotfiles-backup/$file"
-            echo "  backed up: $file"
-        done
+    conflicts=$(dotfiles checkout 2>&1 | grep -E "^[[:space:]]+" | awk '{print $1}') || true
+    echo "$conflicts" | while read -r file; do
+        [ -z "$file" ] && continue
+        mkdir -p "$HOME/.dotfiles-backup/$(dirname "$file")"
+        mv "$HOME/$file" "$HOME/.dotfiles-backup/$file"
+        echo "  backed up: $file"
+    done
     dotfiles checkout
 fi
 
